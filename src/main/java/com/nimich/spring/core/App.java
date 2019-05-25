@@ -1,8 +1,8 @@
 package com.nimich.spring.core;
 
 import com.nimich.spring.core.beans.Client;
-import com.nimich.spring.core.beans.ConsoleEventLogger;
-import com.nimich.spring.core.beans.EventLogger;
+import com.nimich.spring.core.beans.Event;
+import com.nimich.spring.core.loggers.EventLogger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,13 +17,18 @@ public class App {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        App app = context.getBean(App.class);
-        app.logEvent("some event from user 1");
-        app.logEvent("Some event from user 2");
+        App app = context.getBean("another", App.class);
+
+        Event event = context.getBean("event", Event.class);
+        app.logEvent(event, "some event from user 1");
+
+        event = context.getBean("event", Event.class);
+        app.logEvent(event, "Some event from user 2");
     }
 
-    private void logEvent(String msg) {
+    private void logEvent(Event event, String msg) {
         String message = msg.replaceAll(client.getId(), client.getFullName());
-        eventLogger.logEvent(message);
+        event.setMessage(message);
+        eventLogger.logEvent(event);
     }
 }
