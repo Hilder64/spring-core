@@ -4,6 +4,7 @@ import com.nimich.spring.core.beans.Client;
 import com.nimich.spring.core.beans.Event;
 import com.nimich.spring.core.loggers.EventLogger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
@@ -16,7 +17,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         App app = context.getBean("another", App.class);
 
         Event event = context.getBean("event", Event.class);
@@ -24,6 +25,8 @@ public class App {
 
         event = context.getBean("event", Event.class);
         app.logEvent(event, "Some event from user 2");
+
+        context.close();
     }
 
     private void logEvent(Event event, String msg) {

@@ -27,6 +27,6 @@ public class Event {
         return "Event{" + "id=" + id +
                 ", message='" + message + '\'' +
                 ", date=" + dateFormat.format(date) +
-                '}';
+                "}\n";
     }
 }

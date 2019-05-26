@@ -14,7 +14,7 @@
 
     <bean id="app" name="some, another" class="com.nimich.spring.core.App">
         <constructor-arg ref="client"/>
-        <constructor-arg ref="eventLoger"/>
+        <constructor-arg ref="cachedFileEventLogger"/>
     </bean>
 
     <alias name="app" alias="alias"/>
@@ -27,5 +27,15 @@
     </bean>
 
     <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
+
+    <bean id="fileEventLogger" class="com.nimich.spring.core.loggers.FileEventLogger" init-method="init">
+        <constructor-arg value="target/events_log.txt"/>
+    </bean>
+
+    <bean id="cachedFileEventLogger" class="com.nimich.spring.core.loggers.CacheFileEventLogger" init-method="init"
+          destroy-method="destroy">
+        <constructor-arg value="target/events_log.txt"/>
+        <constructor-arg value="5"/>
+    </bean>
 
 </beans>
