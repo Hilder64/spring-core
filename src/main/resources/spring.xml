@@ -5,16 +5,23 @@
  		http://www.springframework.org/schema/beans
  		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
+    <import resource="loggers.xml"/>
+
     <bean id="client" class="com.nimich.spring.core.beans.Client">
         <constructor-arg value="1"/>
         <constructor-arg value="John Smith"/>
+        <property name="greeting" value="Hello there!"/>
     </bean>
-
-    <bean id="eventLoger" class="com.nimich.spring.core.loggers.ConsoleEventLogger"/>
 
     <bean id="app" name="some, another" class="com.nimich.spring.core.App">
         <constructor-arg ref="client"/>
         <constructor-arg ref="cachedFileEventLogger"/>
+        <constructor-arg>
+            <map>
+                <entry key="INFO" value-ref="consoleEventLogger"/>
+                <entry key="ERROR" value-ref="combinedEventLogger"/>
+            </map>
+        </constructor-arg>
     </bean>
 
     <alias name="app" alias="alias"/>
@@ -27,15 +34,5 @@
     </bean>
 
     <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
-
-    <bean id="fileEventLogger" class="com.nimich.spring.core.loggers.FileEventLogger" init-method="init">
-        <constructor-arg value="target/events_log.txt"/>
-    </bean>
-
-    <bean id="cachedFileEventLogger" class="com.nimich.spring.core.loggers.CacheFileEventLogger" init-method="init"
-          destroy-method="destroy">
-        <constructor-arg value="target/events_log.txt"/>
-        <constructor-arg value="5"/>
-    </bean>
 
 </beans>
